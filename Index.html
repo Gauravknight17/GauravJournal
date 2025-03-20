@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Daily Journal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        #journal-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #thought-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .thought {
+            background: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Daily Journal</h1>
+    <div id="journal-container">
+        <input type="text" id="thought-input" placeholder="Write your thought...">
+        <button onclick="addThought()">Add Thought</button>
+        <div id="thought-list"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadThoughts);
+
+        function addThought() {
+            let input = document.getElementById("thought-input");
+            let text = input.value.trim();
+            if (text === "") return;
+
+            let thoughts = JSON.parse(localStorage.getItem("thoughts")) || [];
+            thoughts.push(text);
+            localStorage.setItem("thoughts", JSON.stringify(thoughts));
+
+            input.value = "";
+            loadThoughts();
+        }
+
+        function loadThoughts() {
+            let list = document.getElementById("thought-list");
+            list.innerHTML = "";
+            let thoughts = JSON.parse(localStorage.getItem("thoughts")) || [];
+
+            thoughts.forEach((thought, index) => {
+                let div = document.createElement("div");
+                div.classList.add("thought");
+                div.innerHTML = `<p>${thought}</p>`;
+                list.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
